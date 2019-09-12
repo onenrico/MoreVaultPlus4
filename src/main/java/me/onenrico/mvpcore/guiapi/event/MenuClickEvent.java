@@ -1,5 +1,7 @@
-package me.onenrico.mvpcore.guiapi;
+package me.onenrico.mvpcore.guiapi.event;
 
+import me.onenrico.mvpcore.guiapi.GUIView;
+import me.onenrico.mvpcore.guiapi.item.MenuItem;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
@@ -45,7 +47,6 @@ public class MenuClickEvent extends Event implements Cancellable{
 	public MenuItem getMenuitem() {
 		return menuitem;
 	}
-
 	public Player getClicker() {
 		return clicker;
 	}

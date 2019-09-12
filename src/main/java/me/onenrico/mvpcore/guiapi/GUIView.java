@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import me.onenrico.mvpcore.guiapi.action.ClickAction;
+import me.onenrico.mvpcore.guiapi.action.CloseAction;
+import me.onenrico.mvpcore.guiapi.action.DragAction;
+import me.onenrico.mvpcore.guiapi.item.MenuItem;
+import me.onenrico.mvpcore.guiapi.item.MenuItemContainer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -19,7 +24,7 @@ public class GUIView implements InventoryHolder {
 	private List<MenuItem> menuitems;
 	private CloseAction closeaction;
 	private DragAction dragaction;
-	private GUIAction bottomclickaction;
+	private ClickAction bottomclickaction;
 	private PlaceholderManager pm;
 
 	public GUIView(UUID owner, GUIMenu menu, PlaceholderManager pm) {
@@ -217,11 +222,11 @@ public class GUIView implements InventoryHolder {
 		this.pm = pm;
 	}
 
-	public GUIAction getBottomclickaction() {
+	public ClickAction getBottomclickaction() {
 		return bottomclickaction;
 	}
 
-	public void setBottomclickaction(GUIAction bottomclickaction) {
+	public void setBottomclickaction(ClickAction bottomclickaction) {
 		this.bottomclickaction = bottomclickaction;
 	}
 }

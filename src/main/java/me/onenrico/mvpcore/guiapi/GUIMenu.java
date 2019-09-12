@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
+import me.onenrico.mvpcore.guiapi.animation.OpenAnimation;
+import me.onenrico.mvpcore.guiapi.item.MenuItemContainer;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.inventory.ItemStack;

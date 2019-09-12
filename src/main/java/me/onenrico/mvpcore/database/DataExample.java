@@ -16,7 +16,7 @@ public class DataExample extends DataManagerBase{
 	
 	public void setupTable() {
 		table_one = new ETable(handler, "ONE", EObject.class);
-		table_one.setPrimary("Identifier");
+		table_one.addPrimary("Identifier");
 		table_one.addColumn("Identifier", "char(36)");
 		table_one.addColumn("Autotake", "tinyint(1)");
 		final long beginning = System.currentTimeMillis();

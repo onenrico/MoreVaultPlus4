@@ -1,16 +1,17 @@
-package me.onenrico.mvpcore.guiapi;
+package me.onenrico.mvpcore.guiapi.item;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import me.onenrico.mvpcore.guiapi.action.ClickAction;
 import org.bukkit.inventory.ItemStack;
 
 import me.onenrico.mvpcore.managerapi.PlaceholderManager;
 
 public class MenuItem {
 	private MenuItemContainer item;
-	private Set<GUIAction> actions = new HashSet<>();
+	private Set<ClickAction> actions = new HashSet<>();
 	private PlaceholderManager pm;
 
 	public MenuItem(final int slot, final ItemStack item) {
@@ -51,8 +52,8 @@ public class MenuItem {
 		this.item.item = item;
 	}
 
-	public MenuItem addAction(final GUIAction action) {
-		for (final GUIAction act : new ArrayList<>(actions)) {
+	public MenuItem addAction(final ClickAction action) {
+		for (final ClickAction act : new ArrayList<>(actions)) {
 			if (act.valid(action.getClickType())) {
 				actions.remove(act);
 				actions.add(action);
@@ -70,11 +71,11 @@ public class MenuItem {
 		return result;
 	}
 
-	public void setActions(final Set<GUIAction> actions) {
+	public void setActions(final Set<ClickAction> actions) {
 		this.actions = actions;
 	}
 
-	public Set<GUIAction> getActions() {
+	public Set<ClickAction> getActions() {
 		return actions;
 	}
 

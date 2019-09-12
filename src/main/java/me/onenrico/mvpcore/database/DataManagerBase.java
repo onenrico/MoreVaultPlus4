@@ -95,7 +95,7 @@ public class DataManagerBase extends DataModule{
 		data.table.removeOwned(data.getOwner(), data);
 		if (!databasetype.equals(DatabaseType.YML)) {
 			final HashMap<String, Object> condition = new HashMap<>();
-			condition.put(data.table.getPrimary(), data.getIdentifier());
+			condition.put(data.table.getOnePrimary(), data.getIdentifier());
 			new BukkitRunnable() {
 				@Override
 				public void run() {

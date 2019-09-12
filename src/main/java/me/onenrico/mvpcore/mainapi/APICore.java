@@ -2,7 +2,7 @@ package me.onenrico.mvpcore.mainapi;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
-import me.onenrico.mvpcore.guiapi.MenuListener;
+import me.onenrico.mvpcore.guiapi.listener.MenuListener;
 import me.onenrico.mvpcore.guiapi.MenuLiveUpdate;
 
 public class APICore extends JavaPlugin {

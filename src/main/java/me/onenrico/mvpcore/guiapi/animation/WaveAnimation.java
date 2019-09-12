@@ -1,9 +1,11 @@
-package me.onenrico.mvpcore.guiapi;
+package me.onenrico.mvpcore.guiapi.animation;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import me.onenrico.mvpcore.guiapi.GUIView;
+import me.onenrico.mvpcore.guiapi.item.MenuItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;

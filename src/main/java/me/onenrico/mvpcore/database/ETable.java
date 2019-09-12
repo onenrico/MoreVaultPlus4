@@ -4,11 +4,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
+import me.onenrico.mvpcore.utilsapi.ArrayUT;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -29,14 +27,20 @@ public class ETable {
 	private HashMap<String, HashMap<String, String>> loadedValue;
 	private Set<EObject> loadedObject;
 	private HashMap<UUID, Set<EObject>> ownedObject;
-	private String primary;
+	private List<String> primary;
+	private static List<ETable> queue = new ArrayList<>();
+
+	public ETable addQueue(){
+	    queue.add(this);
+	    return this;
+    }
 
 	public ETable(Plugin handler, final String name, final Class<? extends EObject> container) {
 		columns = new HashMap<>();
 		loadedValue = new HashMap<>();
 		loadedObject = new HashSet<>();
 		ownedObject = new HashMap<>();
-		primary = "";
+		primary = new ArrayList<>();
 		this.name = name;
 		object = container;
 		this.handler = handler;
@@ -115,12 +119,15 @@ public class ETable {
 		return false;
 	}
 
-	public String getPrimary() {
+	public List<String> getPrimary() {
 		return primary;
 	}
+	public String getOnePrimary() {
+		return ArrayUT.stringFromList(getPrimary());
+	}
 
-	public ETable setPrimary(final String primary) {
-		this.primary = primary;
+	public ETable addPrimary(final String primary) {
+		getPrimary().add(primary);
 		return this;
 	}
 
@@ -129,6 +136,26 @@ public class ETable {
 		return getName();
 	}
 
+    public static void createQueue(final Plugin handler, final BukkitRunnable callback) {
+        for (final ETable et : queue) {
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    et.create(new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            Set<ETable> loaded = ETable.loaded.getOrDefault(handler, new HashSet<>());
+                            loaded.add(et);
+                            ETable.loaded.put(handler, loaded);
+                            if (loaded.size() == queue.size() && callback != null) {
+                                callback.run();
+                            }
+                        }
+                    });
+                }
+            }.runTaskAsynchronously(handler);
+        }
+    }
 	public static void create(final Plugin handler, final BukkitRunnable callback,final ETable... tables) {
 		for (final ETable et : tables) {
 			new BukkitRunnable() {
@@ -141,6 +168,26 @@ public class ETable {
 							loaded.add(et);
 							ETable.loaded.put(handler, loaded);
 							if (loaded.size() == tables.length && callback != null) {
+								callback.run();
+							}
+						}
+					});
+				}
+			}.runTaskAsynchronously(handler);
+		}
+	}
+	public static void create(final Plugin handler, final BukkitRunnable callback,final List<ETable> tables) {
+		for (final ETable et : tables) {
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					et.create(new BukkitRunnable() {
+						@Override
+						public void run() {
+							Set<ETable> loaded = ETable.loaded.getOrDefault(handler, new HashSet<>());
+							loaded.add(et);
+							ETable.loaded.put(handler, loaded);
+							if (loaded.size() == tables.size() && callback != null) {
 								callback.run();
 							}
 						}
@@ -197,11 +244,11 @@ public class ETable {
 					for (final String column : columns.keySet()) {
 						value.put(column, cs.getString(String.valueOf(pref) + column));
 					}
-					value.put(primary, identifier);
-					loadedValue.put(value.get(primary), value);
+					value.put(getOnePrimary(), identifier);
+					loadedValue.put(value.get(getOnePrimary()), value);
 					EObject obj;
 					try {
-						obj = object.getConstructor(Plugin.class,String.class).newInstance(handler,value.remove(primary));
+						obj = object.getConstructor(Plugin.class,String.class).newInstance(handler,value.remove(getOnePrimary()));
 					} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
 							| InvocationTargetException | NoSuchMethodException | SecurityException ex2) {
 						MessageUT.cmsg("Cannot create " + object.getSimpleName() + " Exception Occurred");
@@ -235,18 +282,18 @@ public class ETable {
 						for (final String column : columns.keySet()) {
 							value.put(column, rs.getString(column));
 						}
-						loadedValue.put(value.get(primary), value);
+						loadedValue.put(value.get(getOnePrimary()), value);
 						EObject obj;
 						try {
 							obj = object.getConstructor(Plugin.class,String.class).
-									newInstance(handler,value.remove(primary));
+									newInstance(handler,value.remove(getOnePrimary()));
 						} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
 								| InvocationTargetException | NoSuchMethodException | SecurityException ex3) {
 							ex3.printStackTrace();
 							continue;
 						}
 						if (obj.identifier == null) {
-							loadedValue.remove(value.get(primary));
+							loadedValue.remove(value.get(getOnePrimary()));
 						} else {
 							loadedObject.add(obj);
 							ETable.this.addOwned(obj.getOwner(), obj);
@@ -286,7 +333,7 @@ public class ETable {
 						for (final String column : columns.keySet()) {
 							value.put(column, rs.getString(column));
 						}
-						loadedValue.put(value.remove(primary), value);
+						loadedValue.put(value.remove(getOnePrimary()), value);
 					}
 					if (callback != null) {
 						callback.run();
@@ -320,8 +367,8 @@ public class ETable {
 					for (final String column : columns.keySet()) {
 						value.put(column, cs.getString(String.valueOf(pref) + column));
 					}
-					value.put(primary, identifier);
-					loadedValue.put(value.remove(primary), value);
+					value.put(getOnePrimary(), identifier);
+					loadedValue.put(value.remove(getOnePrimary()), value);
 				}
 				if (callback != null) {
 					callback.run();

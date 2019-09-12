@@ -1,7 +1,12 @@
-package me.onenrico.mvpcore.guiapi;
+package me.onenrico.mvpcore.guiapi.listener;
 
 import java.util.ArrayList;
 
+import me.onenrico.mvpcore.guiapi.GUIMenu;
+import me.onenrico.mvpcore.guiapi.GUIView;
+import me.onenrico.mvpcore.guiapi.item.MenuItem;
+import me.onenrico.mvpcore.guiapi.action.ClickAction;
+import me.onenrico.mvpcore.guiapi.event.MenuClickEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -29,17 +34,16 @@ public class MenuListener implements Listener {
 		final Inventory top = e.getView().getTopInventory();
 		if (isCustom(top)) {
 			final GUIView view = (GUIView) top.getHolder();
-			if (view.getMenu().isStoreable()) {
+			if(view.getDragaction() != null)
+				view.getDragaction().act(e);
+			if (view.getMenu().isStoreable())
 				return;
-			}
 			final Inventory inv = e.getInventory();
 			for (final int slot : e.getRawSlots()) {
 				if (slot < inv.getSize()) {
 					e.setCancelled(true);
 				}
 			}
-			if(view.getDragaction() != null)
-			view.getDragaction().act(e);
 		}
 	}
 
@@ -79,7 +83,7 @@ public class MenuListener implements Listener {
 			}
 			return;
 		}
-		for (GUIAction act : new ArrayList<>(mi.getActions())) {
+		for (ClickAction act : new ArrayList<>(mi.getActions())) {
 			if (act.valid(e.getClick())) {
 				act.act(e);
 			}

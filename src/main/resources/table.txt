@@ -1,9 +1,8 @@
 #####################################################
 # NeoVault_VaultData (NEW)
-# Identifier varchar(255)
-# Id bigint
-# Owner varchar(36)
-# Space bigint
+# Id bigint PRIMARY
+# Owner char(36) PRIMARY
+# Space smallint(2)
 # Name text
 # Icon varchar(50)
 # Content text

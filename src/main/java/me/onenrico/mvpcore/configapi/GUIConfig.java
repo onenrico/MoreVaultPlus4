@@ -8,9 +8,9 @@ import org.bukkit.plugin.Plugin;
 
 import me.onenrico.mvpcore.enumsapi.EMaterial;
 import me.onenrico.mvpcore.guiapi.GUIMenu;
-import me.onenrico.mvpcore.guiapi.MenuItemContainer;
-import me.onenrico.mvpcore.guiapi.OpenAnimation;
-import me.onenrico.mvpcore.guiapi.WaveAnimation;
+import me.onenrico.mvpcore.guiapi.item.MenuItemContainer;
+import me.onenrico.mvpcore.guiapi.animation.OpenAnimation;
+import me.onenrico.mvpcore.guiapi.animation.WaveAnimation;
 import me.onenrico.mvpcore.itemapi.ItemBuilder;
 import me.onenrico.mvpcore.managerapi.PlaceholderManager;
 

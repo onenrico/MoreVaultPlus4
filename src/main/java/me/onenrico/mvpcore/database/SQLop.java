@@ -191,17 +191,28 @@ public class SQLop {
 				nn = "";
 			}
 			if (index >= tablevalue.keySet().size()) {
-				result = result + "`" + key + "` " + ty + nn;
+				result += "`" + key + "` " + ty + nn;
 			} else {
-				result = result + "`" + key + "` " + ty + nn + ",";
+				result += "`" + key + "` " + ty + nn + ",";
 			}
 		}
 		if (pkey != null || !pkey.isEmpty()) {
-			result = result + ",PRIMARY KEY (`" + pkey + "`))";
+			result = result + ",PRIMARY KEY (`" ;
+			int index2 = 0;
+			for(String key : pkey){
+				++index2;
+				if(index2 >= pkey.size()){
+					result+=key;
+				}else{
+					result+=key+",";
+				}
+			}
+			result += "`))";
+
 		} else {
-			result = result + ")";
+			result += ")";
 		}
-		result = result + ";";
+		result += ";";
 		return result;
 	}
 

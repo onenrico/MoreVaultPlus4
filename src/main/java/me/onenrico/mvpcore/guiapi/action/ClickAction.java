@@ -1,18 +1,18 @@
-package me.onenrico.mvpcore.guiapi;
+package me.onenrico.mvpcore.guiapi.action;
 
 import java.util.Arrays;
 
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
-public abstract class GUIAction {
+public abstract class ClickAction {
 	private ClickType[] clicktype;
 
-	public GUIAction() {
+	public ClickAction() {
 		this(new ClickType[0]);
 	}
 
-	public GUIAction(final ClickType... clicktype) {
+	public ClickAction(final ClickType... clicktype) {
 		this.clicktype = clicktype;
 	}
 

@@ -1,4 +1,4 @@
-package me.onenrico.mvpcore.guiapi;
+package me.onenrico.mvpcore.guiapi.item;
 
 import org.bukkit.inventory.ItemStack;
 
@@ -11,7 +11,6 @@ public class MenuItemContainer {
 		this.slot = slot;
 	}
 
-	@Override
 	public ItemStack clone() {
 		return item.clone();
 	}
