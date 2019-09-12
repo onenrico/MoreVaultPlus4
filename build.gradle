@@ -1,0 +1,54 @@
+plugins {
+    id 'com.github.johnrengelman.shadow' version '5.1.0'
+    id 'java'
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven {
+        url = 'http://repo.dmulloy2.net/nexus/repository/public/'
+    }
+    maven {
+        url = 'http://repo.maven.apache.org/maven2'
+    }
+    maven {
+        url = 'https://oss.sonatype.org/content/groups/public/'
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: '*.jar')
+    compileOnly fileTree(dir: 'D:\\Minecraft\\Lib', include: '*.jar')
+    compileOnly 'org.spigotmc:spigot:1.14.4-R0.1-SNAPSHOT'
+    compileOnly 'org.projectlombok:lombok:1.18.8'
+    compileOnly 'com.comphenix.protocol:ProtocolLib-API:4.4.0'
+    annotationProcessor 'org.projectlombok:lombok:1.18.8'
+}
+
+
+group 'me.onenrico'
+version '4.0'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+def pluginName = "MoreVaultPlus"
+def pluginDir = "D:\\Minecraft\\PluginTes - Copy\\plugins"
+
+shadowJar {
+    archiveFileName = pluginName + '.jar'
+    destinationDirectory = file(pluginDir)
+    mergeServiceFiles()
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+import org.apache.tools.ant.filters.ReplaceTokens
+processResources {
+    from(sourceSets.main.resources.srcDirs) {
+        include '**/*.yml'
+        filter(ReplaceTokens, tokens: [version: project.version])
+    }
+}

@@ -1,0 +1,38 @@
+#####################################################
+# NeoVault_VaultData (NEW)
+# Identifier varchar(255)
+# Id bigint
+# Owner varchar(36)
+# Space bigint
+# Name text
+# Icon varchar(50)
+# Content text
+# Balance float(2)
+# Exp float(2)
+# Description text
+
+# NeoVault_PlayerData (NEW)
+# Owner char(36)
+# Maxvault bigint
+# Linkedvault bigint
+# Autosell tinyint
+
+
+##########################################################################
+# MoreVault_VaultData (old)
+# Identifier varchar(255)
+# Id bigint
+# Owner varchar(36)
+# Space bigint
+# Name text
+# Icon varchar(50)
+# Content text
+# Balance float(2)
+# Exp float(2)
+# Description text
+
+# MoreVault_PlayerData (old)
+# Owner varchar(37)
+# Maxvault bigint
+# Linkedvault bigint
+# Autosell tinyint
